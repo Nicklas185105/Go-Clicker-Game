@@ -1,5 +1,7 @@
 package frontend
 
+import "github.com/dtylman/gowd"
+
 const gameBody = `
 <div id="gameBody">
 	<div class="row">
@@ -17,19 +19,7 @@ const gameBody = `
 </div>
 `
 
-const homeBody = `
-<div id="homeBody">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="jumbotron">
-				<h1>Clicker Game</h1>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-4 col-md-offset-4">
-			<button class="btn btn-primary btn-block" id="start">Start</button>
-		</div>
-	</div>
-</div>
-`
+func (a *app) click(sender *gowd.Element, event *gowd.EventElement) {
+	a.game.Click()
+	a.score.SetText(a.game.GetScore().String())
+}
