@@ -14,7 +14,10 @@ type app struct {
 	clicks     *gowd.Element
 	clickValue *gowd.Element
 
-	body string
+	em gowd.ElementsMap
+
+	homeBody *gowd.Element
+	gameBody *gowd.Element
 
 	game *engine.Game
 }
@@ -25,14 +28,24 @@ func NewApplication() *app {
 	a.score = gowd.NewStyledText("Score: 0", gowd.BoldText)
 	a.Element = gowd.NewElement("section")
 	a.SetClass("container-fluid")
-	em := gowd.NewElementMap()
+	a.em = gowd.NewElementMap()
 
-	a.body = gameBody
+	a.homeBody = gowd.NewElement("div")
+	a.homeBody.SetClass("row")
+	a.homeBody.AddHTML(homeBody, a.em)
 
-	a.AddHTML(a.body, em)
+	a.gameBody = gowd.NewElement("div")
+	a.gameBody.SetClass("row")
+	a.gameBody.AddHTML(gameBody, a.em)
 
-	a.score = em["score"]
-	em["click"].OnEvent(gowd.OnClick, a.click)
+	a.AddElement(a.homeBody)
+	a.AddElement(a.gameBody)
+
+	a.gameBody.Hide()
+
+	a.score = a.em["score"]
+	a.em["click"].OnEvent(gowd.OnClick, a.click)
+	a.em["start"].OnEvent(gowd.OnClick, a.start)
 
 	return a
 }
